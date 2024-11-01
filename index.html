@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios de Técnico en Informática - TI GreyKC7</title>
+    <style>
+        /* Estilos generales */
+        body { font-family: Arial, sans-serif; background-color: #1c1c1c; color: #f1f1f1; margin: 0; padding: 0; }
+        header { background-color: #333333; color: white; padding: 20px 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        header h1 { margin: 10px 0 5px; font-size: 2.5em; color: #d4af37; }
+        header p { margin: 5px 0; font-size: 1.2em; font-style: italic; color: #b3b3b3; }
+        nav { background-color: #222; padding: 10px; }
+        nav ul { list-style-type: none; margin: 0; padding: 0; display: flex; justify-content: center; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { color: #d4af37; text-decoration: none; padding: 8px 16px; font-size: 1.1em; }
+        nav ul li a:hover { background-color: #d4af37; color: #222; border-radius: 4px; }
+        .container { width: 80%; margin: auto; overflow: hidden; display: none; color: #f1f1f1; }
+        .active { display: block; }
+        .product-card, .contact-form, .cart-summary { background-color: #2c2c2c; padding: 20px; margin: 20px 0; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); border-radius: 8px; color: #f1f1f1; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #444; background-color: #333; color: #f1f1f1; }
+        .contact-form button { background-color: #d4af37; color: #222; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
+        .cart-summary ul { padding: 0; list-style: none; }
+        .footer { background-color: #222; color: #f1f1f1; padding: 20px 0; text-align: center; margin-top: 20px; }
+        .footer a { color: #d4af37; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="\Pagina Web\269743140_123859776787310_881182430231643817_n.png" alt="Logo TI GreyKC7" width="150">
+    <h1>TI GreyKC7</h1>
+    <p>¡Mantén tu equipo en las mejores manos!</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#" onclick="showSection('productos')">Productos</a></li>
+        <li><a href="#" onclick="showSection('carta')">Carta de Presentación</a></li>
+        <li><a href="#" onclick="showSection('contacto')">Contacto</a></li>
+    </ul>
+</nav>
+
+<!-- Sección de Productos -->
+<div class="container" id="productos">
+    <h2>Productos</h2>
+    <div class="product-card">
+        <h3>Instalación de Programas</h3>
+        <p>Precio: $300</p>
+        <button onclick="addToCart('Instalación de Programas', 300)">Añadir al carrito</button>
+    </div>
+    <div class="product-card">
+        <h3>Mantenimiento Preventivo</h3>
+        <p>Precio: $150</p>
+        <button onclick="addToCart('Mantenimiento Preventivo', 150)">Añadir al carrito</button>
+    </div>
+    <div class="product-card">
+        <h3>Mantenimiento Correctivo</h3>
+        <p>Precio: $300</p>
+        <button onclick="addToCart('Mantenimiento Correctivo', 300)">Añadir al carrito</button>
+    </div>
+    <div class="product-card">
+        <h3>Diagnóstico de Equipo</h3>
+        <p>Precio: Gratis</p>
+        <button onclick="addToCart('Diagnóstico de Equipo', 0)">Añadir al carrito</button>
+    </div>
+
+    <h2>Carrito de Compras</h2>
+    <div class="cart-summary" id="cart-summary">
+        <p>No hay productos en el carrito.</p>
+    </div>
+    <button onclick="generateTicket()">Generar Ticket</button>
+</div>
+
+<!-- Sección de Carta de Presentación -->
+<div class="container" id="carta">
+    <h2>Carta de Presentación</h2>
+    <p>Soy OM, presentando mi proyecto de una página web sencilla en HTML que muestra mis servicios de técnico en informática. Esta página incluye un carrito de compras para simular la adquisición de servicios, con un sistema básico para generar tickets.</p>
+</div>
+
+<!-- Sección de Contacto -->
+<div class="container" id="contacto">
+    <h2>Contacto</h2>
+    <p>Envíame un mensaje con tus dudas o consultas:</p>
+    <div class="contact-form">
+        <form action="https://formspree.io/f/xnnqnwqg" method="POST">
+            <input type="text" name="name" id="name" placeholder="Tu nombre" required>
+            <input type="email" name="email" id="email" placeholder="Tu correo electrónico" required>
+            <textarea name="message" id="message" rows="5" placeholder="Tu mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Pie de página -->
+<div class="footer">
+    <p>Sígueme en mis redes sociales:</p>
+    <p><a href="https://www.facebook.com/tu_perfil" target="_blank">Facebook</a></p>
+    <p>&copy; 2024 TI GreyKC7. Todos los derechos reservados.</p>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        let sections = document.getElementsByClassName('container');
+        for (let i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
+        }
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    let cart = [];
+
+    function addToCart(product, price) {
+        cart.push({ product, price });
+        updateCartSummary();
+    }
+
+    function updateCartSummary() {
+        let cartSummary = document.getElementById('cart-summary');
+        if (cart.length === 0) {
+            cartSummary.innerHTML = "<p>No hay productos en el carrito.</p>";
+        } else {
+            let summaryHTML = "<ul>";
+            let total = 0;
+            cart.forEach(item => {
+                summaryHTML += `<li>${item.product} - $${item.price}</li>`;
+                total += item.price;
+            });
+            summaryHTML += `</ul><p>Total: $${total}</p>`;
+            cartSummary.innerHTML = summaryHTML;
+        }
+    }
+
+    function generateTicket() {
+        if (cart.length === 0) {
+            alert("El carrito está vacío.");
+        } else {
+            let newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                <head>
+                    <title>Recibo de Compra - TI GreyKC7</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                        h1 { color: #d4af37; }
+                        ul { padding: 0; list-style: none; }
+                        ul li { padding: 5px 0; }
+                        .total { font-weight: bold; margin-top: 20px; }
+                        .print-btn { margin-top: 20px; padding: 10px; background-color: #d4af37; color: #222; border: none; cursor: pointer; border-radius: 5px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>TI GreyKC7 - Recibo de Compra</h1>
+                    <p>ID de compra: ${Math.floor(Math.random() * 1000000)}</p>
+                    <ul>
+                        ${cart.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
+                    </ul>
+                    <p class="total">Total: $${cart.reduce((sum, item) => sum + item.price, 0)}</p>
+                    <button class="print-btn" onclick="window.print()">Imprimir Recibo</button>
+                </body>
+                </html>
+            `);
+        }
+    }
+</script>
+</body>
+</html>
