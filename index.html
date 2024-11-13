@@ -125,22 +125,28 @@
         updateCartSummary();
     }
 
-    function updateCartSummary() {
+   function updateCartSummary() {
     let cartSummary = document.getElementById('cart-summary');
     if (cart.length === 0) {
         cartSummary.innerHTML = "<p>No hay productos en el carrito.</p>";
     } else {
         let summaryHTML = "<ul>";
         let total = 0;
-        cart.forEach(item => {
-            summaryHTML += `<li>${item.product} - $${item.price}</li>`;
+        cart.forEach((item, index) => {
+            summaryHTML += `
+                <li>${item.product} - $${item.price} 
+                <button onclick="removeFromCart(${index})" style="margin-left: 10px; color: white; background-color: red; border: none; cursor: pointer; border-radius: 5px;">Eliminar</button>
+                </li>`;
             total += item.price;
         });
         summaryHTML += `</ul><p>Total: $${total}</p>`;
         cartSummary.innerHTML = summaryHTML;
     }
 }
-
+function removeFromCart(index) {
+    cart.splice(index, 1); // Elimina el producto en la posición 'index'
+    updateCartSummary(); // Actualiza el resumen del carrito
+}
 function generateTicket() {
     if (cart.length === 0) {
         alert("El carrito está vacío.");
