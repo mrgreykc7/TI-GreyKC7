@@ -124,10 +124,10 @@
             let summaryHTML = "<ul>";
             let total = 0;
             cart.forEach(item => {
-                summaryHTML += `<li>${item.product} - $${item.price}</li>`;
+                summaryHTML += <li>${item.product} - $${item.price}</li>;
                 total += item.price;
             });
-            summaryHTML += `</ul><p>Total: $${total}</p>`;
+            summaryHTML += </ul><p>Total: $${total}</p>;
             cartSummary.innerHTML = summaryHTML;
         }
     }
@@ -137,7 +137,7 @@
             alert("El carrito está vacío.");
         } else {
             let newWindow = window.open('', '_blank');
-            newWindow.document.write(`
+            newWindow.document.write(
                 <html>
                 <head>
                     <title>Recibo de Compra - TI GreyKC7</title>
@@ -154,13 +154,13 @@
                     <h1>TI GreyKC7 - Recibo de Compra</h1>
                     <p>ID de compra: ${Math.floor(Math.random() * 1000000)}</p>
                     <ul>
-                        ${cart.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
+                        ${cart.map(item => <li>${item.product} - $${item.price}</li>).join('')}
                     </ul>
                     <p class="total">Total: $${cart.reduce((sum, item) => sum + item.price, 0)}</p>
                     <button class="print-btn" onclick="window.print()">Imprimir Recibo</button>
                 </body>
                 </html>
-            `);
+            );
         }
     }
 </script>
