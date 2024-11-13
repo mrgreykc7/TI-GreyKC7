@@ -1,3 +1,8 @@
+aspecto visual de los productos (Crear unas imagenes a los productos)
+
+ticket de compra que sea ventana emergente que no sea alerta.
+inicio de pagina, que primero mande a a la tienda de productos
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,10 +20,10 @@
         nav ul li { margin: 0 15px; }
         nav ul li a { color: #d4af37; text-decoration: none; padding: 8px 16px; font-size: 1.1em; }
         nav ul li a:hover { background-color: #d4af37; color: #222; border-radius: 4px; }
-        .container { width: 80%; margin: auto; overflow: hidden; color: #f1f1f1; }
+        .container { width: 80%; margin: auto; overflow: hidden; display: none; color: #f1f1f1; }
+        .active { display: block; }
         .product-card, .contact-form, .cart-summary { background-color: #2c2c2c; padding: 20px; margin: 20px 0; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); border-radius: 8px; color: #f1f1f1; }
-        .product-card h3 { color: #d4af37; }
-        .product-card button { background-color: #d4af37; color: #222; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        .product-image { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
         .contact-form input, .contact-form textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #444; background-color: #333; color: #f1f1f1; }
         .contact-form button { background-color: #d4af37; color: #222; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
         .cart-summary ul { padding: 0; list-style: none; }
@@ -47,23 +52,31 @@
 <div class="container" id="productos">
     <h2>Productos</h2>
     <div class="product-card">
+        <img src="instalacion.jpg" alt="Instalación de Programas" class="product-image">
         <h3>Instalación de Programas</h3>
-        <p>Servicio de instalación de software específico para optimizar el funcionamiento de tu equipo. Precio: $300</p>
+        <p>Precio: $300</p>
+        <p>Servicio de instalación de todo tipo de software, asegurando la compatibilidad y funcionalidad óptima en tu equipo.</p>
         <button onclick="addToCart('Instalación de Programas', 300)">Añadir al carrito</button>
     </div>
     <div class="product-card">
+        <img src="mantenimiento_preventivo.jpg" alt="Mantenimiento Preventivo" class="product-image">
         <h3>Mantenimiento Preventivo</h3>
-        <p>Revisión y limpieza interna para prevenir fallos. Precio: $150</p>
+        <p>Precio: $150</p>
+        <p>Servicio preventivo que incluye limpieza de hardware, actualización de software y revisión general.</p>
         <button onclick="addToCart('Mantenimiento Preventivo', 150)">Añadir al carrito</button>
     </div>
     <div class="product-card">
+        <img src="mantenimiento_correctivo.jpg" alt="Mantenimiento Correctivo" class="product-image">
         <h3>Mantenimiento Correctivo</h3>
-        <p>Reparación de problemas y fallos en el sistema. Precio: $300</p>
+        <p>Precio: $300</p>
+        <p>Reparación y corrección de fallos específicos en el hardware o software de tu equipo.</p>
         <button onclick="addToCart('Mantenimiento Correctivo', 300)">Añadir al carrito</button>
     </div>
     <div class="product-card">
+        <img src="diagnostico.jpg" alt="Diagnóstico de Equipo" class="product-image">
         <h3>Diagnóstico de Equipo</h3>
-        <p>Diagnóstico de hardware y software. Precio: Gratis</p>
+        <p>Precio: Gratis</p>
+        <p>Evaluación completa del equipo para identificar posibles fallos o mejoras necesarias.</p>
         <button onclick="addToCart('Diagnóstico de Equipo', 0)">Añadir al carrito</button>
     </div>
 
@@ -118,52 +131,49 @@
     }
 
     function updateCartSummary() {
-        let cartSummary = document.getElementById('cart-summary');
-        if (cart.length === 0) {
-            cartSummary.innerHTML = "<p>No hay productos en el carrito.</p>";
-        } else {
-            let summaryHTML = "<ul>";
-            let total = 0;
-            cart.forEach(item => {
-                summaryHTML += `<li>${item.product} - $${item.price}</li>`;
-                total += item.price;
-            });
-            summaryHTML += `</ul><p>Total: $${total}</p>`;
-            cartSummary.innerHTML = summaryHTML;
-        }
+    let cartSummary = document.getElementById('cart-summary');
+    if (cart.length === 0) {
+        cartSummary.innerHTML = "<p>No hay productos en el carrito.</p>";
+    } else {
+        let summaryHTML = "<ul>";
+        let total = 0;
+        cart.forEach(item => {
+            summaryHTML += `<li>${item.product} - $${item.price}</li>`;
+            total += item.price;
+        });
+        summaryHTML += `</ul><p>Total: $${total}</p>`;
+        cartSummary.innerHTML = summaryHTML;
     }
+}
 
-    function generateTicket() {
-        if (cart.length === 0) {
-            alert("El carrito está vacío.");
-        } else {
-            let newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <html>
-                <head>
-                    <title>Recibo de Compra - TI GreyKC7</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                        h1 { color: #d4af37; }
-                        ul { padding: 0; list-style: none; }
-                        ul li { padding: 5px 0; }
-                        .total { font-weight: bold; margin-top: 20px; }
-                        .print-btn { margin-top: 20px; padding: 10px; background-color: #d4af37; color: #222; border: none; cursor: pointer; border-radius: 5px; }
-                    </style>
-                </head>
-                <body>
-                    <h1>TI GreyKC7 - Recibo de Compra</h1>
-                    <p>ID de compra: ${Math.floor(Math.random() * 1000000)}</p>
-                    <ul>
-                        ${cart.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
-                    </ul>
-                    <p class="total">Total: $${cart.reduce((sum, item) => sum + item.price, 0)}</p>
-                    <button class="print-btn" onclick="window.print()">Imprimir Recibo</button>
-                </body>
-                </html>
-            `);
-        }
+function generateTicket() {
+    if (cart.length === 0) {
+        alert("El carrito está vacío.");
+    } else {
+        let ticketWindow = window.open("", "_blank", "width=600,height=400");
+        ticketWindow.document.write(`
+            <html>
+            <head>
+                <title>Recibo de Compra - TI GreyKC7</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                    h1 { color: #d4af37; }
+                    ul { padding: 0; list-style: none; }
+                    ul li { padding: 5px 0; }
+                    .total { font-weight: bold; margin-top: 20px; }
+                    .print-btn { margin-top: 20px; padding: 10px; background-color: #d4af37; color: #222; border: none; cursor: pointer; border-radius: 5px; }
+                </style>
+            </head>
+            <body>
+                <h1>TI GreyKC7 - Recibo de Compra</h1>
+                <p>ID de compra: ${Math.floor(Math.random() * 1000000)}</p>
+                <ul>
+                    ${cart.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
+                </ul>
+                <p class="total">Total: $${cart.reduce((sum, item) => sum + item.price, 0)}</p>
+                <button class="print-btn" onclick="window.print()">Imprimir Recibo</button>
+            </body>
+            </html>
+        `);
     }
-</script>
-</body>
-</html>
+}
